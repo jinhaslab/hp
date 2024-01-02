@@ -15,9 +15,30 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
+from django.conf.urls import handler403
+from blog.views import custom_permission_denied_view  # Import from your app
+
+
 
 urlpatterns = [
-    path('', include('home.urls')),
     path("admin/", admin.site.urls),
-    path("", include('theme_soft_pro.urls'))
-]
+    path("", include('home.urls')),
+    
+    path("presentation/", include('presentation.urls')),
+    path("books/", include('books.urls')),
+
+    path("blog/", include('blog.urls')),
+    path("articles/", include('articles.urls')),
+
+    path("aiapps/", include('aiapps.urls')),
+    
+    path("", include('theme_soft_pro.urls')), 
+    path('markdownx/', include('markdownx.urls')),
+]    
+
+if settings.DEBUG: 
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler403 = custom_permission_denied_view

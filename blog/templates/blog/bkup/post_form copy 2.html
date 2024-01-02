@@ -1,0 +1,20 @@
+{% extends 'layouts/simple_basic.html' %}
+{% load static %}
+{% load blog_extras %}
+{% block body %}blog-categories{% endblock body %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Create New Post</h2>
+    <form method="post" enctype="multipart/form-data" class="post-form">
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">create Post</button>
+            <a href="{% url 'blog:home' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,77 @@
+{% extends 'layouts/simple_basic.html' %}
+{% load static %}
+{% load blog_extras %}
+{% block body %}blog-categories{% endblock body %}
+
+{% block head %}
+
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Include Google Maps API with Callback -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+
+<!-- Include SimpleMDE CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock head %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create New Post</h2>
+    <form method="post" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+
+        <!-- Title Field -->
+        <div class="form-group">
+            <label for="id_title">Title</label>
+            <input type="text" class="form-control" id="id_title" name="title"
+                value="{{ form.title.value|default_if_none:'' }}" required>
+        </div>
+
+        <!-- Excerpt Field -->
+        <div class="form-group">
+            <label for="id_excerpt">Excerpt</label>
+            <textarea class="form-control" id="id_excerpt" name="excerpt"
+                rows="1">{{ form.excerpt.value|default_if_none:'' }}</textarea>
+        </div>
+
+        <!-- Body Field with SimpleMDE -->
+        <div class="form-group">
+            <label for="id_body">Body (Markdown)</label>
+            <textarea class="form-control" id="id_body" name="body" rows="10"
+                required>{{ form.body.value|default_if_none:'' }}</textarea>
+        </div>
+
+        <!-- Slide Link Field -->
+        <div class="form-group">
+            <label for="id_slide_link">Slide Link</label>
+            <input type="url" class="form-control" id="id_slide_link" name="slide_link"
+                value="{{ form.slide_link.value|default_if_none:'' }}">
+        </div>
+
+        <!-- Image Field -->
+        <div class="form-group">
+            <label for="id_image">Image</label>
+            <input type="file" class="form-control-file" id="id_image" name="image">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function () {
+        if (typeof jQuery !== 'undefined') {
+            console.log('jQuery is loaded');
+        } else {
+            console.log('jQuery is NOT loaded');
+        }
+
+        // Initialize SimpleMDE
+        var simplemde = new SimpleMDE({ element: $("#id_body")[0] });
+    });
+</script>
+{% endblock extra_js %}

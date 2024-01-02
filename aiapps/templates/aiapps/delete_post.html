@@ -1,0 +1,12 @@
+{% extends 'layouts/simple_basic.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Are you sure you want to delete "{{ post.title }}"?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete it</button>
+        <a href="{% url 'aiapps:post_detail' post.pk %}" class="btn btn-secondary">No, take me back</a>
+    </form>
+</div>
+{% endblock content %}

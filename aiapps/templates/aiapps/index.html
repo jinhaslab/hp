@@ -1,0 +1,241 @@
+{% extends 'layouts/base-transparent.html' %}
+{% load static %}
+{% load aiapps_extras %}
+{% block body %}blog-categories{% endblock body %}
+{% block content %}
+<!-- -------- START HEADER 4 w/ search book a ticket form ------- -->
+<header>
+    <div class="page-header min-vh-45" style="background-image: url('/media/post_images/neuralnetwor.png');">
+
+        <span class="mask bg-gradient-secondary"></span>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-white text-center">
+                    <h2 class="text-white">Web Apps and AI</h2>
+                    <p class="lead">Experience firsthand the enhanced accessibility, interactivity, and usability of
+                        data-driven webapps and AI, HITL and
+                        MITL can harmonize the research</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="position-relative overflow-hidden" style="height:36px;margin-top:-35px;">
+        <div class="w-full absolute bottom-0 start-0 end-0"
+            style="transform: scale(2);transform-origin: top center;color: #fff;">
+            <svg viewBox="0 0 2880 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 48H1437.5H2880V0H2160C1442.5 52 720 0 720 0H0V48Z" fill="currentColor"></path>
+            </svg>
+        </div>
+    </div>
+    <!-- ... other content ... -->
+    <div class="container">
+        <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 position-relative w-75 mx-auto">
+            <div class="input-group">
+                <form method="get" class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <!-- Retain search term -->
+                    <input class="form-control" placeholder="Search for stories" type="text" name="q"
+                        value="{{ request.GET.q }}">
+                    <div class="mt-0">
+                        <button class="btn bg-gradient-primary rounded-start  ms-1" type="submit">Search</button>
+                        <!-- Reset button -->
+                        <a href="{% url 'aiapps:home' %}" class="btn bg-gradient-warning  rounded-end ms-1">Reset</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<!-- -------- END HEADER 4 w/ search book a ticket form ------- -->
+<div class="container mt-7">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <!-- Your aiapps post loop starts here -->
+                {% for post in object_list %}
+                <div class="col-lg-6 justify-content-center d-flex flex-column">
+                    <div class="card ">
+                        <!-- Image container to maintain aspect ratio -->
+                        <div class="image-container d-block blur-shadow-image mt-5">
+                            <a href="{% url 'aiapps:post_detail' post.pk %}">
+                                <img src="{{ post.image.url }}" alt="{{ post.title }}"
+                                    class="img-fluid border-radius-lg">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 justify-content-center d-flex flex-column pl-lg-5 pt-lg-0 pt-3">
+
+                    <h6 class="category text-primary mt-2">{{ post.excerpt }} </h6>
+                    <h3 class="card-title">
+                        <a href="{% url 'aiapps:post_detail' post.pk %}" class="text-dark">{{ post.title }}</a>
+                    </h3>
+
+
+                    <p class="card-description ">{{ post.body|truncate_chars:260 }}
+                        <br>
+                        <i class="fas fa-arrow-right text-xs ms-1"></i>
+                        <small class="text-muted">by {{ post.author.username }}
+                            {{ post.created_on|date:"F j, Y" }}</small>
+                        <br>
+                        <a href="{% url 'aiapps:post_detail' post.pk %}" class="btn btn-outline-primary btn-sm">Read
+                            More</a>
+
+                        {% if post.slide_link %}
+                        <a href="{{ post.slide_link }}" target="_blank" rel="noopener"
+                            class="btn btn-outline-danger btn-sm">
+                            View original Slide
+                        </a>
+                        {% endif %}
+                    </p>
+                    <br>
+
+                </div>
+                {% endfor %}
+                <!-- Your aiapps post loop ends here -->
+
+            </div>
+        </div>
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+            {% if object_list.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ object_list.previous_page_number }}">previous</a>
+            {% endif %}
+
+            {% for i in object_list.paginator.page_range %}
+            {% if object_list.number == i %}
+            <span class="current-page">{{ i }}</span>
+            {% else %}
+            <a href="?page={{ i }}">{{ i }}</a>
+            {% endif %}
+            {% endfor %}
+
+            {% if object_list.has_next %}
+            <a href="?page={{ object_list.next_page_number }}">next</a>
+            <a href="?page={{ object_list.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
+    <div class="create-post-button">
+        <a href="{% url 'aiapps:create_post' %}" class="btn btn-primary">Create Post</a>
+    </div>
+
+
+</div>
+
+<style>
+    input[type="text"]:not(:placeholder-shown) {
+        background-color: #f0f0f0;
+    }
+
+    .image-container {
+        width: 100%;
+        padding-top: 60%;
+        /* 16:9 Aspect Ratio */
+        position: relative;
+    }
+
+    .image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .image-wrapper {
+        position: relative;
+        width: 100%;
+        padding-top: 80%;
+        /* 16:9 Aspect Ratio */
+        overflow: hidden;
+    }
+
+    .image-wrapper img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: translate(-50%, -50%);
+    }
+
+    .card-description {
+        margin-bottom: 1rem;
+        /* Provides spacing between the description and the author line */
+    }
+
+    .author a {
+        text-decoration: none;
+        /* Removes the underline from the author link */
+        color: #0056b3;
+        /* Example color for the author's name */
+    }
+
+    .author span {
+        font-weight: bold;
+        /* Makes the author's name bold */
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        color: blue;
+        /* Change as per your color scheme */
+        padding: 5px;
+        text-decoration: none;
+    }
+
+    .step-links a,
+    .step-links .current-page {
+        padding: 5px 10px;
+        margin: 0 3px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        text-decoration: none;
+        color: #333;
+        border-radius: 5px;
+    }
+
+    .step-links a:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .step-links .current-page {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .create-post-button {
+        margin: 20px 0;
+        text-align: center;
+        /* Center the button */
+    }
+</style>
+
+{% endblock content %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}

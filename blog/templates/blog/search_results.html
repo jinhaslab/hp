@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Search Results</title>
+    </head>
+
+    <body>
+        <h1>Search Results for "{{ request.GET.q }}"</h1>
+        {% for post in object_list %}
+        <div>
+            <h2><a href="{% url 'blog:post_detail' post.pk %}">{{ post.title }}</a></h2>
+
+            <p>{{ post.body|truncatewords:30 }}</p>
+        </div>
+        {% empty %}
+        <p>No posts found.</p>
+        {% endfor %}
+    </body>
+
+</html>

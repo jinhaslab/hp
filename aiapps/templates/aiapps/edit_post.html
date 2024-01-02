@@ -1,0 +1,87 @@
+{% extends 'layouts/simple_basic.html' %}
+{% load static %}
+{% load aiapps_extras %}
+
+{% block body %}blog-categories{% endblock body %}
+
+{% block extrastyle %}
+<style>
+    /* Custom CSS for EasyMDE */
+    .easyMDEContainer {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .easyMDEContainer .editor-preview-side {
+        width: 50%;
+        /* Adjust as needed */
+    }
+
+    .easyMDEContainer .CodeMirror {
+        width: 50%;
+        /* Adjust as needed */
+    }
+</style>
+{% endblock extrastyle %}
+
+{% block content %}
+<div class="container mt-5">
+    <br>
+    <br>
+
+    <h2>Create New Post</h2>
+    <form method="post" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+        {{ form.media }}
+
+        <!-- Title Field -->
+        <div class="form-group">
+            <label for="id_title">Title</label>
+            <input type="text" class="form-control" id="id_title" name="title"
+                value="{{ form.title.value|default_if_none:'' }}" required>
+        </div>
+
+        <!-- Excerpt Field (not strictly required because of the default value) -->
+        <div class="form-group">
+            <label for="id_excerpt">Excerpt</label>
+            <textarea class="form-control" id="id_excerpt" name="excerpt"
+                rows="1">{{ form.excerpt.value|default_if_none:'' }}</textarea>
+        </div>
+
+        <!-- Body Field -->
+        <div class="form-group">
+            <label for="id_body">Body</label>
+            <textarea class="form-control" id="id_body" name="body">
+            {{ form.body.value|default_if_none:'' }}</textarea>
+        </div>
+
+        <!-- Slide Link Field (optional) -->
+        <div class="form-group">
+            <label for="id_slide_link">Slide Link (optional)</label>
+            <input type="url" class="form-control" id="id_slide_link" name="slide_link"
+                value="{{ form.slide_link.value|default_if_none:'' }}">
+        </div>
+
+        <!-- Image Field (optional) -->
+        <div class="form-group">
+            <label for="id_image">Image (optional)</label>
+            <input type="file" class="form-control-file" id="id_image" name="image">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update Post</button>
+        <a href="{% url 'aiapps:post_detail' post.pk %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var easyMDE = new EasyMDE({
+            element: document.getElementById('id_body'),
+            // EasyMDE options
+            sideBySideFullscreen: false, // enables side-by-side without full screen
+        });
+    });
+</script>
+{% endblock extra_js %}

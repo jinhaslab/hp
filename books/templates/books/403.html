@@ -1,0 +1,27 @@
+{% extends 'layouts/simple_basic.html' %}
+
+{% block content %}
+
+
+
+<body>
+    <div class="container">
+        <h1>Forbidden</h1>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <div class="container">
+        <div class="row bg-white shadow-lg mt-n6 border-radius-md pb-4 p-3 position-relative w-75 mx-auto">
+            <h4>
+                {{ message }}
+            </h4>
+            <div class="mt-0">
+                <a href="{% url 'books:home' %}" class="btn bg-gradient-warning  rounded-end ms-1">Blog Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}

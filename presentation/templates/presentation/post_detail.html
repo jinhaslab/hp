@@ -1,0 +1,62 @@
+{% extends 'layouts/simple_basic.html' %}
+{% load static %}
+{% load presentation_extras %}
+{% block body %}blog-categories{% endblock body %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+
+        <title>{{ post.title }}</title>
+    </head>
+
+    <div class="container mt-7">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+
+                    <body>
+                        <h6 class="category text-primary mt-2">{{ post.excerpt }} </h6>
+                        <div>
+                            <h1>{{ post.title }}</h1>
+                            {% if post.slide_link %}
+                            <a href="{{ post.slide_link }}" target="_blank" rel="noopener"
+                                class="btn btn-outline-secondary btn-sm">
+                                View original Slide
+                            </a>
+                            {% endif %}
+                            <p>Posted by {{ post.author }} on {{ post.created_on }}</p>
+                            <div>{{ post.body }}</div>
+                            {% if post.slide_link %}
+                            <a href="{{ post.slide_link }}" target="_blank" rel="noopener"
+                                class="btn btn-outline-dark btn-sm">
+                                View original Slide
+                            </a>
+                            {% endif %}
+                            <!-- Edit and Delete buttons -->
+                            {% if user.is_authenticated and user == post.author %}
+                            <a href="{% url 'presentation:edit_post' post.pk %}"
+                                class="btn btn-outline-primary btn-sm">Edit</a>
+                            <a href="{% url 'presentation:delete_post' post.pk %}"
+                                class="btn btn-outline-danger btn-sm">Delete</a>
+                            {% endif %}
+                            <a href="{% url 'presentation:home' %}" class="btn btn-outline-dark btn-sm">Blog Home</a>
+                        </div>
+                    </body>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</html>
+
+
+{% endblock content %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}
